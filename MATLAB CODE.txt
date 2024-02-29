@@ -1,0 +1,4605 @@
+MATLAB Code 
+Code C1
+Theoretical band all frequencies bands @1MHz
+%
+% Theoretical band all frequencies bands @1MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days’ worth of trials.
+
+% Theoretical band All Frequencies structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+TheobandALL = struct ('Name', 'TheoreticalbandAllFreqs', 'MinFreq', 3.7e9, 'MaxFreq', 31.0e9, 'FreqbandwidthSpan', 1e6);
+
+% Arrays for frequencies and time for Theoretical band all frequencies
+TheobandallFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+%Two sessions will run simultaneously to create the transmitter and
+%oppenent effect. Or 1:1 scenario
+
+% Pseudorandom freqs and second Theoretical band all frequencies for each session
+
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for
+        % Theoretical band all frequencies. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+        
+        % Frequency adjustment to 1MHz bandwidth limiting available space
+        FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+        
+        % Display frequencies for Theoretical-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', TheobandALL.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    TheobandallFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'Theoretical_band_ALL_frequencies_1MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+            FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = TheobandallFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+    FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Theoretical_Band_AllFREQS_1MHz');
+
+% Excel export action shown in the command window. 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C2
+Theoretical band all frequencies bands @10MHz
+
+% Theoretical band all frequencies bands @10MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Theoretical band All Frequencies structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+TheobandALL = struct('Name', 'TheoreticalbandAllFreqs', 'MinFreq', 3.7e9, 'MaxFreq', 31.0e9, 'FreqbandwidthSpan', 10e6);
+
+% Arrays for frequencies and time for Theoretical band all frequencies
+TheobandallFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+%Two sessions will run simultaneously to create the transmitter and
+%oppenent effect. Or 1:1 scenario
+
+% Pseudorandom freqs and second Theoretical band all frequencies for each session
+
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for
+        % Theoretical band all frequencies. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+        
+        % Frequency adjustment to 10MHz bandwidth limiting available space
+        FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+        
+        % Display frequencies for Theoretical-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', TheobandALL.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    TheobandallFreq(: session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'Theoretical_band_ALL_frequencies_10MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+            FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = TheobandallFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+    FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Theoretical_Band_AllFREQS_10MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C3
+Theoretical band all frequencies bands @ 20MHz
+
+% Theoretical band all frequencies bands @20MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Theoretical band All Frequencies structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+TheobandALL = struct('Name', 'TheoreticalbandAllFreqs', 'MinFreq', 3.7e9, 'MaxFreq', 31.0e9, 'FreqbandwidthSpan', 20e6);
+
+% Arrays for frequencies and time for Theoretical band all frequencies
+TheobandallFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+%Two sessions will run simultaneously to create the transmitter and
+%oppenent effect. Or 1:1 scenario
+
+% Pseudorandom freqs and second Theoretical band all frequencies for each session
+
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for
+        % Theoretical band all frequencies. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+        
+        % Frequency adjustment to 20MHz bandwidth limiting available space
+        FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+        
+        % Display frequencies for Theoretical-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', TheobandALL.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    TheobandallFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'Theoretical_band_ALL_frequencies_20MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+            FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = TheobandallFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+    FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Theoretical_Band_AllFREQS_20MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C4
+Theoretical band all frequencies bands @27MHz
+% Theoretical band all frequencies bands @27MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 day’s worth of trials.
+
+% Theoretical band All Frequencies structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+TheobandALL = struct('Name', 'TheoreticalbandAllFreqs', 'MinFreq', 3.7e9, 'MaxFreq', 31.0e9, 'FreqbandwidthSpan', 27e6);
+
+% Arrays for frequencies and time for Theoretical band all frequencies
+TheobandallFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+%Two sessions will run simultaneously to create the transmitter and
+%oppenent effect. Or 1:1 scenario
+
+% Pseudorandom freqs and second Theoretical band all frequencies for each session
+
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for
+        % Theoretical band all frequencies. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+        
+        % Frequency adjustment to 27MHz bandwidth limiting available space
+        FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+        
+        % Display frequencies for Theoretical-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', TheobandALL.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    TheobandallFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'Theoretical_band_ALL_frequencies_27MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+            FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = TheobandallFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+    FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Theoretical_Band_AllFREQS_27MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C5
+Theoretical band all frequencies bands @36MHz
+
+% Theoretical band all frequencies bands @36MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 day’s worth of trials.
+
+% Theoretical band All Frequencies structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+TheobandALL = struct('Name', 'TheoreticalbandAllFreqs', 'MinFreq', 3.7e9, 'MaxFreq', 31.0e9, 'FreqbandwidthSpan', 36e6);
+
+% Arrays for frequencies and time for Theoretical band all frequencies
+TheobandallFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+%Two sessions will run simultaneously to create the transmitter and
+%oppenent effect. Or 1:1 scenario
+
+% Pseudorandom freqs and second Theoretical band all frequencies for each session
+
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for
+        % Theoretical band all frequencies. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+        
+        % Frequency adjustment to 36MHz bandwidth limiting available space
+        FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+        
+        % Display frequencies for Theoretical-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', TheobandALL.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    TheobandallFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'Theoretical_band_ALL_frequencies_36MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+            FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = TheobandallFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+    FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Theoretical_Band_AllFREQS_36MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C6
+Theoretical band all frequencies bands @36MHz
+
+% Theoretical band all frequencies bands @36MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Theoretical band All Frequencies structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+TheobandALL = struct('Name', 'TheoreticalbandAllFreqs', 'MinFreq', 3.7e9, 'MaxFreq', 31.0e9, 'FreqbandwidthSpan', 36e6);
+
+% Arrays for frequencies and time for Theoretical band all frequencies
+TheobandallFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+%Two sessions will run simultaneously to create the transmitter and
+%oppenent effect. Or 1:1 scenario
+
+% Pseudorandom freqs and second Theoretical band all frequencies for each session
+
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for
+        % Theoretical band all frequencies. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+        
+        % Frequency adjustment to 36MHz bandwidth limiting available space
+        FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+        
+        % Display frequencies for Theoretical-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', TheobandALL.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    TheobandallFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'Theoretical_band_ALL_frequencies_36MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+            FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = TheobandallFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+    FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Theoretical_Band_AllFREQS_36MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C7
+Theoretical band all frequencies bands @50MHz
+
+% Theoretical band all frequencies bands @50MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Theoretical band All Frequencies structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+TheobandALL = struct('Name', 'TheoreticalbandAllFreqs', 'MinFreq', 3.7e9, 'MaxFreq', 31.0e9, 'FreqbandwidthSpan', 50e6);
+
+% Arrays for frequencies and time for Theoretical band all frequencies
+TheobandallFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+%Two sessions will run simultaneously to create the transmitter and
+%oppenent effect. Or 1:1 scenario
+
+% Pseudorandom freqs and second Theoretical band all frequencies for each session
+
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for
+        % Theoretical band all frequencies. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+        
+        % Frequency adjustment to 50MHz bandwidth limiting available space
+        FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+        
+        % Display frequencies for Theoretical-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', TheobandALL.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    TheobandallFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'Theoretical_band_ALL_frequencies_50MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+            FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = TheobandallFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+    FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Theoretical_Band_AllFREQS_50MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C8
+Theoretical band all frequencies bands @70MHz
+
+% Theoretical band all frequencies bands @70MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Theoretical band All Frequencies structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+TheobandALL = struct('Name', 'TheoreticalbandAllFreqs', 'MinFreq', 3.7e9, 'MaxFreq', 31.0e9, 'FreqbandwidthSpan', 70e6);
+
+% Arrays for frequencies and time for Theoretical band all frequencies
+TheobandallFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+%Two sessions will run simultaneously to create the transmitter and
+%oppenent effect. Or 1:1 scenario
+
+% Pseudorandom freqs and second Theoretical band all frequencies for each session
+
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for
+        % Theoretical band all frequencies. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+        
+        % Frequency adjustment to 70MHz bandwidth limiting available space
+        FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+        
+        % Display frequencies for Theoretical-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', TheobandALL.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    TheobandallFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'Theoretical_band_ALL_frequencies_70MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+            FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = TheobandallFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (TheobandALL.MaxFreq - TheobandALL.MinFreq) + TheobandALL.MinFreq;
+    FREQ = round(FREQ / TheobandALL.FreqbandwidthSpan) * TheobandALL.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Theoretical_Band_AllFREQS_70MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C9
+Theoretical band uplink @1MHz
+
+% Theoretical band uplink @1MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Theoreticalbanduplink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Theobanuplink = struct('Name', 'Theoreticalbanduplink', 'MinFreq', 3.7e9, 'MaxFreq', 17.3e9, 'FreqbandwidthSpan', 1e6);
+
+% Arrays for frequencies and time for Theoreticalbanduplink
+TheoUplinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+%Creating the 1:1 Scenario by having two sessions run simultaneously
+%"transfer" and "opponent"
+
+% Pseudorandom freqs and second Theoretical band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for
+        % Theoretical uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Theobanuplink.MaxFreq - Theobanuplink.MinFreq) + Theobanuplink.MinFreq;
+        
+        % Frequency adjustment to 1MHz bandwidth limiting available space
+        FREQ = round(FREQ / Theobanuplink.FreqbandwidthSpan) * Theobanuplink.FreqbandwidthSpan;
+        
+        % Display frequencies for Theoretical-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Theobanuplink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    TheoUplinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'Theoretical_band_uplink_frequencies_1MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Theobanuplink.MaxFreq - Theobanuplink.MinFreq) + Theobanuplink.MinFreq;
+            FREQ = round(FREQ / Theobanuplink.FreqbandwidthSpan) * Theobanuplink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = TheoUplinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Theobanuplink.MaxFreq - Theobanuplink.MinFreq) + Theobanuplink.MinFreq;
+    FREQ = round(FREQ / Theobanuplink.FreqbandwidthSpan) * Theobanuplink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Theoretical_uplink_1MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C10
+Theoretical band uplink @1MHz
+
+% Theoretical band uplink @1MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 day’s worth of trials.
+
+% Theoreticalbanduplink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Theobanuplink = struct('Name', 'Theoreticalbanduplink', 'MinFreq', 3.7e9, 'MaxFreq', 17.3e9, 'FreqbandwidthSpan', 1e6);
+
+% Arrays for frequencies and time for Theoreticalbanduplink
+TheoUplinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+%Creating the 1:1 Scenario by having two sessions run simultaneously
+%"transfer" and "opponent"
+
+% Pseudorandom freqs and second Theoretical band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for
+        % Theoretical uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Theobanuplink.MaxFreq - Theobanuplink.MinFreq) + Theobanuplink.MinFreq;
+        
+        % Frequency adjustment to 1MHz bandwidth limiting available space
+        FREQ = round(FREQ / Theobanuplink.FreqbandwidthSpan) * Theobanuplink.FreqbandwidthSpan;
+        
+        % Display frequencies for Theoretical-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Theobanuplink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    TheoUplinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'Theoretical_band_uplink_frequencies_1MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Theobanuplink.MaxFreq - Theobanuplink.MinFreq) + Theobanuplink.MinFreq;
+            FREQ = round(FREQ / Theobanuplink.FreqbandwidthSpan) * Theobanuplink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = TheoUplinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Theobanuplink.MaxFreq - Theobanuplink.MinFreq) + Theobanuplink.MinFreq;
+    FREQ = round(FREQ / Theobanuplink.FreqbandwidthSpan) * Theobanuplink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Theoretical_uplink_1MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C11
+Theoretical band uplink @1MHz
+% Theoretical band uplink @1MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Theoreticalbanduplink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Theobanuplink = struct('Name', 'Theoreticalbanduplink', 'MinFreq', 3.7e9, 'MaxFreq', 17.3e9, 'FreqbandwidthSpan', 1e6);
+
+% Arrays for frequencies and time for Theoreticalbanduplink
+TheoUplinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+%Creating the 1:1 Scenario by having two sessions run simultaneously
+%"transfer" and "opponent"
+
+% Pseudorandom freqs and second Theoretical band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for
+        % Theoretical uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Theobanuplink.MaxFreq - Theobanuplink.MinFreq) + Theobanuplink.MinFreq;
+        
+        % Frequency adjustment to 1MHz bandwidth limiting available space
+        FREQ = round(FREQ / Theobanuplink.FreqbandwidthSpan) * Theobanuplink.FreqbandwidthSpan;
+        
+        % Display frequencies for Theoretical-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Theobanuplink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    TheoUplinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'Theoretical_band_uplink_frequencies_1MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Theobanuplink.MaxFreq - Theobanuplink.MinFreq) + Theobanuplink.MinFreq;
+            FREQ = round(FREQ / Theobanuplink.FreqbandwidthSpan) * Theobanuplink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = TheoUplinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Theobanuplink.MaxFreq - Theobanuplink.MinFreq) + Theobanuplink.MinFreq;
+    FREQ = round(FREQ / Theobanuplink.FreqbandwidthSpan) * Theobanuplink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Theoretical_uplink_1MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C12
+Theoretical band uplink @10MHz
+
+% Theoretical band uplink @10MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 day’s worth of trials.
+
+% Theoreticalbanduplink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Theobanuplink = struct('Name', 'Theoreticalbanduplink', 'MinFreq', 3.7e9, 'MaxFreq', 17.3e9, 'FreqbandwidthSpan', 10e6);
+
+% Arrays for frequencies and time for Theoreticalbanduplink
+TheoUplinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+%Creating the 1:1 Scenario by having two sessions run simultaneously
+%"transfer" and "opponent"
+
+% Pseudorandom freqs and second Theoretical band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for
+        % Theoretical uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Theobanuplink.MaxFreq - Theobanuplink.MinFreq) + Theobanuplink.MinFreq;
+        
+        % Frequency adjustment to 10MHz bandwidth limiting available space
+        FREQ = round(FREQ / Theobanuplink.FreqbandwidthSpan) * Theobanuplink.FreqbandwidthSpan;
+        
+        % Display frequencies for Theoretical-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Theobanuplink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    TheoUplinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'Theoretical_band_uplink_frequencies_10MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Theobanuplink.MaxFreq - Theobanuplink.MinFreq) + Theobanuplink.MinFreq;
+            FREQ = round(FREQ / Theobanuplink.FreqbandwidthSpan) * Theobanuplink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = TheoUplinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Theobanuplink.MaxFreq - Theobanuplink.MinFreq) + Theobanuplink.MinFreq;
+    FREQ = round(FREQ / Theobanuplink.FreqbandwidthSpan) * Theobanuplink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Theoretical_uplink_10MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+Code C13
+Theoretical uplink frequencies band @70MHz
+% Theoretical uplink frequencies bands @70MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 day’s worth of trials.
+
+% Theoretical band uplink Frequencies structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Theobanduplinkfreq = struct('Name', 'Theoreticalbanduplink', 'MinFreq', 3.7e9, 'MaxFreq', 17.30e9, 'FreqbandwidthSpan', 70e6);
+
+% Arrays for frequencies and time for Theoreticalbanduplink
+TheobanduplinkFreqs = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+%Two sessions will run simultaneously to create the transmitter and
+%oppenent effect. Or 1:1 scenario
+
+% Pseudorandom freqs and second Theoretical band uplink for each session
+
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for
+        % Theoretical uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Theobanduplinkfreq.MaxFreq - Theobanduplinkfreq.MinFreq) + Theobanduplinkfreq.MinFreq;
+        
+        % Frequency adjustment to 70MHz bandwidth limiting available space
+        FREQ = round(FREQ / Theobanduplinkfreq.FreqbandwidthSpan) * Theobanduplinkfreq.FreqbandwidthSpan;
+        
+        % Display frequencies for Theoretical-band uplink with a decimal limitation
+        % of 4 decimal places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Theobanduplinkfreq.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    TheobanduplinkFreqs(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'Theoretical_band_uplink_frequencies_70MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Theobanduplinkfreq.MaxFreq - Theobanduplinkfreq.MinFreq) + Theobanduplinkfreq.MinFreq;
+            FREQ = round(FREQ / Theobanduplinkfreq.FreqbandwidthSpan) * Theobanduplinkfreq.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = TheobanduplinkFreqs(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Theobanduplinkfreq.MaxFreq - Theobanduplinkfreq.MinFreq) + Theobanduplinkfreq.MinFreq;
+    FREQ = round(FREQ / Theobanduplinkfreq.FreqbandwidthSpan) * Theobanduplinkfreq.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Theoretical_Band_uplink_70MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C13
+Theoretical band downlink @1MHz
+% Theoretical band downlink @1MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 day’s worth of trials.
+
+% Theoreticalbanduplink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Theobandownlink = struct('Name', 'Theoreticalbanddownlink', 'MinFreq', 17.5e9, 'MaxFreq', 31.0e9, 'FreqbandwidthSpan', 1e6);
+
+% Arrays for frequencies and time for Theoreticalbanddownlink
+TheodownlinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+%Two sessions will run simultaneously to create the transmitter and
+%oppenent effect. Or 1:1 scenario
+
+% Pseudorandom freqs and second Theoretical band uplink for each session
+
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for
+        % Theoretical uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Theobandownlink.MaxFreq - Theobandownlink.MinFreq) + Theobandownlink.MinFreq;
+        
+        % Frequency adjustment to 1MHz bandwidth limiting available space
+        FREQ = round(FREQ / Theobandownlink.FreqbandwidthSpan) * Theobandownlink.FreqbandwidthSpan;
+        
+        % Display frequencies for Theoretical-band downlink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Theobandownlink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    TheodownlinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'Theoretical_band_downlink_frequencies_1MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Theobandownlink.MaxFreq - Theobandownlink.MinFreq) + Theobandownlink.MinFreq;
+            FREQ = round(FREQ / Theobandownlink.FreqbandwidthSpan) * Theobandownlink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = TheodownlinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Theobandownlink.MaxFreq - Theobandownlink.MinFreq) + Theobandownlink.MinFreq;
+    FREQ = round(FREQ / Theobandownlink.FreqbandwidthSpan) * Theobandownlink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Theoretical_downlink_1MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+Code C14
+Theoretical band downlink @10MHz
+% Theoretical band downlink @10MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Theoreticalbanduplink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Theobandownlink = struct('Name', 'Theoreticalbanddownlink', 'MinFreq', 17.5e9, 'MaxFreq', 31.0e9, 'FreqbandwidthSpan', 10e6);
+
+% Arrays for frequencies and time for Theoreticalbanddownlink
+TheodownlinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+%Two sessions will run simultaneously to create the transmitter and
+%oppenent effect. Or 1:1 scenario
+
+% Pseudorandom freqs and second Theoretical band uplink for each session
+
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for
+        % Theoretical uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Theobandownlink.MaxFreq - Theobandownlink.MinFreq) + Theobandownlink.MinFreq;
+        
+        % Frequency adjustment to 10MHz bandwidth limiting available space
+        FREQ = round(FREQ / Theobandownlink.FreqbandwidthSpan) * Theobandownlink.FreqbandwidthSpan;
+        
+        % Display frequencies for Theoretical-band downlink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Theobandownlink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    TheodownlinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'Theoretical_band_downlink_frequencies_10MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Theobandownlink.MaxFreq - Theobandownlink.MinFreq) + Theobandownlink.MinFreq;
+            FREQ = round(FREQ / Theobandownlink.FreqbandwidthSpan) * Theobandownlink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = TheodownlinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Theobandownlink.MaxFreq - Theobandownlink.MinFreq) + Theobandownlink.MinFreq;
+    FREQ = round(FREQ / Theobandownlink.FreqbandwidthSpan) * Theobandownlink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Theoretical_downlink_10MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C15
+Theoretical band downlink @70MHz
+
+% Theoretical band downlink @70MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Theoreticalbanduplink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Theobandownlink = struct('Name', 'Theoreticalbanduplink', 'MinFreq', 17.5e9, 'MaxFreq', 31.0e9, 'FreqbandwidthSpan', 70e6);
+
+% Arrays for frequencies and time for Theoreticalbanddownlink
+TheodownlinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+%Two sessions will run simultaneously to create the transmitter and
+%oppenent effect. Or 1:1 scenario
+
+% Pseudorandom freqs and second Theoretical band uplink for each session
+
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for
+        % Theoretical uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Theobandownlink.MaxFreq - Theobandownlink.MinFreq) + Theobandownlink.MinFreq;
+        
+        % Frequency adjustment to 70MHz bandwidth limiting available space
+        FREQ = round(FREQ / Theobandownlink.FreqbandwidthSpan) * Theobandownlink.FreqbandwidthSpan;
+        
+        % Display frequencies for Theoretical-band downlink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Theobandownlink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    TheodownlinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'Theoretical_band_downlink_frequencies_70MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Theobandownlink.MaxFreq - Theobandownlink.MinFreq) + Theobandownlink.MinFreq;
+            FREQ = round(FREQ / Theobandownlink.FreqbandwidthSpan) * Theobandownlink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = TheodownlinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Theobandownlink.MaxFreq - Theobandownlink.MinFreq) + Theobandownlink.MinFreq;
+    FREQ = round(FREQ / Theobandownlink.FreqbandwidthSpan) * Theobandownlink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Theoretical_downlink_70MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C16
+C band uplink @1MHz
+% C band uplink @1MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Cbanduplink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Xbanuplink = struct('Name', 'Xbanduplink', 'MinFreq', 5.9e9, 'MaxFreq', 6.4e9, 'FreqbandwidthSpan', 1e6);
+
+% Arrays for frequencies and time for Cbanduplink
+CUplinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second C band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for C
+        % uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Xbanuplink.MaxFreq - Xbanuplink.MinFreq) + Xbanuplink.MinFreq;
+        
+        % Frequency adjustment to 1MHz bandwidth limiting available space
+        FREQ = round(FREQ / Xbanuplink.FreqbandwidthSpan) * Xbanuplink.FreqbandwidthSpan;
+        
+        % Display frequencies for C-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Xbanuplink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    CUplinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'C_band_uplink_frequencies_1MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Xbanuplink.MaxFreq - Xbanuplink.MinFreq) + Xbanuplink.MinFreq;
+            FREQ = round(FREQ / Xbanuplink.FreqbandwidthSpan) * Xbanuplink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = CUplinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Xbanuplink.MaxFreq - Xbanuplink.MinFreq) + Xbanuplink.MinFreq;
+    FREQ = round(FREQ / Xbanuplink.FreqbandwidthSpan) * Xbanuplink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'C_uplink_1MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C17
+C band uplink @10MHz
+% C band uplink @10MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Cbanduplink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Cbanuplink = struct('Name', 'Cbanduplink', 'MinFreq', 5.9e9, 'MaxFreq', 6.4e9, 'FreqbandwidthSpan', 10e6);
+
+% Arrays for frequencies and time for Cbanduplink
+CUplinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second C band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for C
+        % uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Cbanuplink.MaxFreq - Cbanuplink.MinFreq) + Cbanuplink.MinFreq;
+        
+        % Frequency adjustment to 10MHz bandwidth limiting available space
+        FREQ = round(FREQ / Cbanuplink.FreqbandwidthSpan) * Cbanuplink.FreqbandwidthSpan;
+        
+        % Display frequencies for C-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Cbanuplink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    CUplinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'C_band_uplink_frequencies_10MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Cbanuplink.MaxFreq - Cbanuplink.MinFreq) + Cbanuplink.MinFreq;
+            FREQ = round(FREQ / Cbanuplink.FreqbandwidthSpan) * Cbanuplink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = CUplinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Cbanuplink.MaxFreq - Cbanuplink.MinFreq) + Cbanuplink.MinFreq;
+    FREQ = round(FREQ / Cbanuplink.FreqbandwidthSpan) * Cbanuplink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'C_uplink_10MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C18
+C band uplink @10MHz
+% C band uplink @10MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Cbanduplink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Cbanuplink = struct('Name', 'Cbanduplink', 'MinFreq', 5.9e9, 'MaxFreq', 6.4e9, 'FreqbandwidthSpan', 10e6);
+
+% Arrays for frequencies and time for Cbanduplink
+CUplinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second C band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for C
+        % uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Cbanuplink.MaxFreq - Cbanuplink.MinFreq) + Cbanuplink.MinFreq;
+        
+        % Frequency adjustment to 10MHz bandwidth limiting available space
+        FREQ = round(FREQ / Cbanuplink.FreqbandwidthSpan) * Cbanuplink.FreqbandwidthSpan;
+        
+        % Display frequencies for C-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Cbanuplink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    CUplinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'C_band_uplink_frequencies_10MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Cbanuplink.MaxFreq - Cbanuplink.MinFreq) + Cbanuplink.MinFreq;
+            FREQ = round(FREQ / Cbanuplink.FreqbandwidthSpan) * Cbanuplink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = CUplinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Cbanuplink.MaxFreq - Cbanuplink.MinFreq) + Cbanuplink.MinFreq;
+    FREQ = round(FREQ / Cbanuplink.FreqbandwidthSpan) * Cbanuplink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'C_uplink_10MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code 19
+C band uplink @36MHz
+% C band uplink @36MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Cbanddownlink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Cbanuplink = struct('Name', 'Cbanduplink', 'MinFreq', 5.9e9, 'MaxFreq', 6.4e9, 'FreqbandwidthSpan', 36e6);
+
+% Arrays for frequencies and time for Cbanduplink
+CUplinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second C band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for C
+        % uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Cbanuplink.MaxFreq - Cbanuplink.MinFreq) + Cbanuplink.MinFreq;
+        
+        % Frequency adjustment to 36MHz bandwidth limiting available space
+        FREQ = round(FREQ / Cbanuplink.FreqbandwidthSpan) * Cbanuplink.FreqbandwidthSpan;
+        
+        % Display frequencies for C-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Cbanuplink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    CUplinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'C_band_uplink_frequencies_36MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Cbanuplink.MaxFreq - Cbanuplink.MinFreq) + Cbanuplink.MinFreq;
+            FREQ = round(FREQ / Cbanuplink.FreqbandwidthSpan) * Cbanuplink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = CUplinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Cbanuplink.MaxFreq - Cbanuplink.MinFreq) + Cbanuplink.MinFreq;
+    FREQ = round(FREQ / Cbanuplink.FreqbandwidthSpan) * Cbanuplink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'C_uplink_36MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C20
+C band downlink @1MHz
+% C band downlink @1MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Cbanddownlink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Cbanddownlink = struct('Name', 'Cbanddownlink', 'MinFreq', 3.7e9, 'MaxFreq', 4.2e9, 'FreqbandwidthSpan', 1e6);
+
+% Arrays for frequencies and time for Kubanddownlink
+CDownlinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second C band downlink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for C
+        % downlink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Cbanddownlink.MaxFreq - Cbanddownlink.MinFreq) + Cbanddownlink.MinFreq;
+        
+        % Frequency adjustment to 1MHz bandwidth limiting available space
+        FREQ = round(FREQ / Cbanddownlink.FreqbandwidthSpan) * Cbanddownlink.FreqbandwidthSpan;
+        
+        % Display frequencies for C-band downlink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Cbanddownlink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    CDownlinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'C_band_downlink_frequencies_1MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Cbanddownlink.MaxFreq - Cbanddownlink.MinFreq) + Cbanddownlink.MinFreq;
+            FREQ = round(FREQ / Cbanddownlink.FreqbandwidthSpan) * Cbanddownlink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = CDownlinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Cbanddownlink.MaxFreq - Cbanddownlink.MinFreq) + Cbanddownlink.MinFreq;
+    FREQ = round(FREQ / Cbanddownlink.FreqbandwidthSpan) * Cbanddownlink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'C_downlink_1MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C21
+C band downlink @10MHz
+
+% C band downlink @10MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Cbanddownlink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Cbanddownlink = struct('Name', 'Cbanddownlink', 'MinFreq', 3.7e9, 'MaxFreq', 4.2e9, 'FreqbandwidthSpan', 10e6);
+
+% Arrays for frequencies and time for Kubanddownlink
+CDownlinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second C band downlink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for C
+        % downlink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Cbanddownlink.MaxFreq - Cbanddownlink.MinFreq) + Cbanddownlink.MinFreq;
+        
+        % Frequency adjustment to 10MHz bandwidth limiting available space
+        FREQ = round(FREQ / Cbanddownlink.FreqbandwidthSpan) * Cbanddownlink.FreqbandwidthSpan;
+        
+        % Display frequencies for C-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Cbanddownlink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    CDownlinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'C_band_downlink_frequencies_10MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Cbanddownlink.MaxFreq - Cbanddownlink.MinFreq) + Cbanddownlink.MinFreq;
+            FREQ = round(FREQ / Cbanddownlink.FreqbandwidthSpan) * Cbanddownlink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = CDownlinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Cbanddownlink.MaxFreq - Cbanddownlink.MinFreq) + Cbanddownlink.MinFreq;
+    FREQ = round(FREQ / Cbanddownlink.FreqbandwidthSpan) * Cbanddownlink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'C_downlink_10MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C22
+C band downlink @36MHz
+
+% C band downlink @36MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Cbanddownlink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Cbandownlink = struct('Name', 'Cbanduplink', 'MinFreq', 3.7e9, 'MaxFreq', 4.2e9, 'FreqbandwidthSpan', 36e6);
+
+% Arrays for frequencies and time for Kubanddownlink
+CDownlinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second C band downlink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for C
+        % downlink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Cbandownlink.MaxFreq - Cbandownlink.MinFreq) + Cbandownlink.MinFreq;
+        
+        % Frequency adjustment to 36MHz bandwidth limiting available space
+        FREQ = round(FREQ / Cbandownlink.FreqbandwidthSpan) * Cbandownlink.FreqbandwidthSpan;
+        
+        % Display frequencies for C-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Cbandownlink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    CDownlinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'C_band_downlink_frequencies_36MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Cbandownlink.MaxFreq - Cbandownlink.MinFreq) + Cbandownlink.MinFreq;
+            FREQ = round(FREQ / Cbandownlink.FreqbandwidthSpan) * Cbandownlink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = CDownlinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Cbandownlink.MaxFreq - Cbandownlink.MinFreq) + Cbandownlink.MinFreq;
+    FREQ = round(FREQ / Cbandownlink.FreqbandwidthSpan) * Cbandownlink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'C_downlink_36MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C23
+Ka-band downlink @1MHz
+% Ka-band downlink @1MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Kabanddownlink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Kabanddownlink = struct('Name', 'Ka-Downlink', 'MinFreq', 27.5e9, 'MaxFreq', 31.0e9, 'FreqbandwidthSpan', 1e6);
+
+% Arrays for frequencies and time for Kubanddownlink
+KadownlinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second Ka-band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for Ka
+        % downlink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Kabanddownlink.MaxFreq - Kabanddownlink.MinFreq) + Kabanddownlink.MinFreq;
+        
+        % Frequency adjustment to 1MHz bandwidth limiting available space
+        FREQ = round(FREQ / Kabanddownlink.FreqbandwidthSpan) * Kabanddownlink.FreqbandwidthSpan;
+        
+        % Display frequencies for Ka-band downlink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Kabanddownlink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    KadownlinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'ka_band_downlink_frequencies_1MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Kabanddownlink.MaxFreq - Kabanddownlink.MinFreq) + Kabanddownlink.MinFreq;
+            FREQ = round(FREQ / Kabanddownlink.FreqbandwidthSpan) * Kabanddownlink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = KadownlinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Kabanddownlink.MaxFreq - Kabanddownlink.MinFreq) + Kabanddownlink.MinFreq;
+    FREQ = round(FREQ / Kabanddownlink.FreqbandwidthSpan) * Kabanddownlink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Ka_Uplink_1MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C24
+Ka-band uplink @10MHz
+% Ka-band uplink @10MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Kabanduplink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+KabandUplink = struct('Name', 'Ka-Uplink', 'MinFreq', 27.5e9, 'MaxFreq', 31.0e9, 'FreqbandwidthSpan', 10e6);
+
+% Arrays for frequencies and time for Kubanduplink
+KaUplinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second Ka-band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for Ka
+        % uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (KabandUplink.MaxFreq - KabandUplink.MinFreq) + KabandUplink.MinFreq;
+        
+        % Frequency adjustment to 10MHz bandwidth limiting available space
+        FREQ = round(FREQ / KabandUplink.FreqbandwidthSpan) * KabandUplink.FreqbandwidthSpan;
+        
+        % Display frequencies for Ka-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', KabandUplink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    KaUplinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'ka_band_uplink_frequencies_10MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (KabandUplink.MaxFreq - KabandUplink.MinFreq) + KabandUplink.MinFreq;
+            FREQ = round(FREQ / KabandUplink.FreqbandwidthSpan) * KabandUplink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = KaUplinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (KabandUplink.MaxFreq - KabandUplink.MinFreq) + KabandUplink.MinFreq;
+    FREQ = round(FREQ / KabandUplink.FreqbandwidthSpan) * KabandUplink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Ka_Uplink_10MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C25
+Ka-band uplink @50MHz
+% Ka-band uplink @50MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Kabanduplink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHZ and the
+% FreqbandwidthSpan is in MHz. 
+KabandUplink = struct('Name', 'Ka-Uplink', 'MinFreq', 27.5e9, 'MaxFreq', 31.0e9, 'FreqbandwidthSpan', 50e6);
+
+% Arrays for frequencies and time for Kabanduplink
+KaUplinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second Ka-band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for Ka
+        % uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (KabandUplink.MaxFreq - KabandUplink.MinFreq) + KabandUplink.MinFreq;
+        
+        % Frequency adjustment to 50MHz bandwidth limiting available space
+        FREQ = round(FREQ / KabandUplink.FreqbandwidthSpan) * KabandUplink.FreqbandwidthSpan;
+        
+        % Display frequencies for Ka-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', KabandUplink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    KaUplinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'ka_band_uplink_frequencies_50MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (KabandUplink.MaxFreq - KabandUplink.MinFreq) + KabandUplink.MinFreq;
+            FREQ = round(FREQ / KabandUplink.FreqbandwidthSpan) * KabandUplink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = KaUplinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (KabandUplink.MaxFreq - KabandUplink.MinFreq) + KabandUplink.MinFreq;
+    FREQ = round(FREQ / KabandUplink.FreqbandwidthSpan) * KabandUplink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Ka_Uplink_50MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C26
+Ka band downlink @1MHz
+% Ka-band downlink @1MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Kabanddownlink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Kabanddownlink = struct('Name', 'Ka-Downlink', 'MinFreq', 27.5e9, 'MaxFreq', 31.0e9, 'FreqbandwidthSpan', 1e6);
+
+% Arrays for frequencies and time for Kubanddownlink
+KadownlinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second Ka-band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for Ka
+        % downlink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Kabanddownlink.MaxFreq - Kabanddownlink.MinFreq) + Kabanddownlink.MinFreq;
+        
+        % Frequency adjustment to 1MHz bandwidth limiting available space
+        FREQ = round(FREQ / Kabanddownlink.FreqbandwidthSpan) * Kabanddownlink.FreqbandwidthSpan;
+        
+        % Display frequencies for Ka-band downlink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Kabanddownlink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    KadownlinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'ka_band_downlink_frequencies_1MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Kabanddownlink.MaxFreq - Kabanddownlink.MinFreq) + Kabanddownlink.MinFreq;
+            FREQ = round(FREQ / Kabanddownlink.FreqbandwidthSpan) * Kabanddownlink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = KadownlinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Kabanddownlink.MaxFreq - Kabanddownlink.MinFreq) + Kabanddownlink.MinFreq;
+    FREQ = round(FREQ / Kabanddownlink.FreqbandwidthSpan) * Kabanddownlink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Ka_Downlink_1MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C27
+Ka band downlink @10MHz
+% Ka-band downlink @10MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Kabanddownlink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Kabanddownlink = struct('Name', 'Ka-Downlink', 'MinFreq', 27.5e9, 'MaxFreq', 31.0e9, 'FreqbandwidthSpan', 10e6);
+
+% Arrays for frequencies and time for Kubanddownlink
+KadownlinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second Ka-band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for Ka
+        % downlink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Kabanddownlink.MaxFreq - Kabanddownlink.MinFreq) + Kabanddownlink.MinFreq;
+        
+        % Frequency adjustment to 10MHz bandwidth limiting available space
+        FREQ = round(FREQ / Kabanddownlink.FreqbandwidthSpan) * Kabanddownlink.FreqbandwidthSpan;
+        
+        % Display frequencies for Ka-band downlink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Kabanddownlink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    KadownlinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'ka_band_downlink_frequencies_10MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Kabanddownlink.MaxFreq - Kabanddownlink.MinFreq) + Kabanddownlink.MinFreq;
+            FREQ = round(FREQ / Kabanddownlink.FreqbandwidthSpan) * Kabanddownlink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = KadownlinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Kabanddownlink.MaxFreq - Kabanddownlink.MinFreq) + Kabanddownlink.MinFreq;
+    FREQ = round(FREQ / Kabanddownlink.FreqbandwidthSpan) * Kabanddownlink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Ka_Downlink_10MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C28
+Ka band downlink @50MHz
+% Ka-band downlink @50MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Kabanddownlink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Kabanddownlink = struct('Name', 'Ka-Downlink', 'MinFreq', 27.5e9, 'MaxFreq', 31.0e9, 'FreqbandwidthSpan', 50e6);
+
+% Arrays for frequencies and time for Kubanddownlink
+KadownlinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second Ka-band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for Ka
+        % downlink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Kabanddownlink.MaxFreq - Kabanddownlink.MinFreq) + Kabanddownlink.MinFreq;
+        
+        % Frequency adjustment to 50MHz bandwidth limiting available space
+        FREQ = round(FREQ / Kabanddownlink.FreqbandwidthSpan) * Kabanddownlink.FreqbandwidthSpan;
+        
+        % Display frequencies for Ka-band downlink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Kabanddownlink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    KadownlinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'ka_band_downlink_frequencies_50MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Kabanddownlink.MaxFreq - Kabanddownlink.MinFreq) + Kabanddownlink.MinFreq;
+            FREQ = round(FREQ / Kabanddownlink.FreqbandwidthSpan) * Kabanddownlink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = KadownlinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Kabanddownlink.MaxFreq - Kabanddownlink.MinFreq) + Kabanddownlink.MinFreq;
+    FREQ = round(FREQ / Kabanddownlink.FreqbandwidthSpan) * Kabanddownlink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Ka_Downlink_10MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C29
+Ka-band uplink @1MHz
+% Ka-band uplink @1MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Kabanduplink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+KabandUplink = struct('Name', 'Ka-Uplink', 'MinFreq', 14.0e9, 'MaxFreq', 14.5e9, 'FreqbandwidthSpan', 1e6);
+
+% Arrays for frequencies and time for Kubanduplink
+KaUplinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second Ku band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for Ka
+        % uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (KabandUplink.MaxFreq - KabandUplink.MinFreq) + KabandUplink.MinFreq;
+        
+        % Frequency adjustment to 1MHz bandwidth limiting available space
+        FREQ = round(FREQ / KabandUplink.FreqbandwidthSpan) * KabandUplink.FreqbandwidthSpan;
+        
+        % Display frequencies for Ku-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', KabandUplink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    KaUplinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'Ku_band_uplink_frequencies_1MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (KabandUplink.MaxFreq - KabandUplink.MinFreq) + KabandUplink.MinFreq;
+            FREQ = round(FREQ / KabandUplink.FreqbandwidthSpan) * KabandUplink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = KaUplinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (KabandUplink.MaxFreq - KabandUplink.MinFreq) + KabandUplink.MinFreq;
+    FREQ = round(FREQ / KabandUplink.FreqbandwidthSpan) * KabandUplink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Ka_Uplink_1MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C30
+Ku band uplink @10MHz
+% Ku band uplink @10MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Kubanduplink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+KubandUplink = struct('Name', 'Ku-Uplink', 'MinFreq', 14.0e9, 'MaxFreq', 14.5e9, 'FreqbandwidthSpan', 10e6);
+
+% Arrays for frequencies and time for Kubanduplink
+KuUplinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second Ku band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for Ku
+        % uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (KubandUplink.MaxFreq - KubandUplink.MinFreq) + KubandUplink.MinFreq;
+        
+        % Frequency adjustment to 10MHz bandwidth limiting available space
+        FREQ = round(FREQ / KubandUplink.FreqbandwidthSpan) * KubandUplink.FreqbandwidthSpan;
+        
+        % Display frequencies for Ku-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', KubandUplink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    KuUplinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'ku_band_uplink_frequencies_10MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (KubandUplink.MaxFreq - KubandUplink.MinFreq) + KubandUplink.MinFreq;
+            FREQ = round(FREQ / KubandUplink.FreqbandwidthSpan) * KubandUplink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = KuUplinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (KubandUplink.MaxFreq - KubandUplink.MinFreq) + KubandUplink.MinFreq;
+    FREQ = round(FREQ / KubandUplink.FreqbandwidthSpan) * KubandUplink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Ku_Uplink_10MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C31
+Ku band downlink @27MHz	
+% Ku band downlink @27MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Kubanduplink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+KubandUplink = struct('Name', 'Ku-Uplink', 'MinFreq', 11.7e9, 'MaxFreq', 12.2e9, 'FreqbandwidthSpan', 27e6);
+
+% Arrays for frequencies and time for Kubanduplink
+KuUplinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second Ku band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for Ku
+        % uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (KubandUplink.MaxFreq - KubandUplink.MinFreq) + KubandUplink.MinFreq;
+        
+        % Frequency adjustment to 27MHz bandwidth limiting available space
+        FREQ = round(FREQ / KubandUplink.FreqbandwidthSpan) * KubandUplink.FreqbandwidthSpan;
+        
+        % Display frequencies for Ku-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', KubandUplink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    KuUplinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'ku_band_uplink_frequencies_27MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (KubandUplink.MaxFreq - KubandUplink.MinFreq) + KubandUplink.MinFreq;
+            FREQ = round(FREQ / KubandUplink.FreqbandwidthSpan) * KubandUplink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = KuUplinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (KubandUplink.MaxFreq - KubandUplink.MinFreq) + KubandUplink.MinFreq;
+    FREQ = round(FREQ / KubandUplink.FreqbandwidthSpan) * KubandUplink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Ku_Uplink_27MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C32
+Ku band downlink @1MHz
+% Ku band downlink @1MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Kubanddownlink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Kubanddownlink = struct('Name', 'Ku-Uplink', 'MinFreq', 11.7e9, 'MaxFreq', 12.2e9, 'FreqbandwidthSpan', 1e6);
+
+% Arrays for frequencies and time for Kubanddownlink
+KuDownlinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second Ku band downlink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for Ku
+        % downlink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Kubanddownlink.MaxFreq - Kubanddownlink.MinFreq) + Kubanddownlink.MinFreq;
+        
+        % Frequency adjustment to 27MHz bandwidth limiting available space
+        FREQ = round(FREQ / Kubanddownlink.FreqbandwidthSpan) * Kubanddownlink.FreqbandwidthSpan;
+        
+        % Display frequencies for Ku-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Kubanddownlink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    KuDownlinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'ku_band_downlink_frequencies_1MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Kubanddownlink.MaxFreq - Kubanddownlink.MinFreq) + Kubanddownlink.MinFreq;
+            FREQ = round(FREQ / Kubanddownlink.FreqbandwidthSpan) * Kubanddownlink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = KuDownlinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Kubanddownlink.MaxFreq - Kubanddownlink.MinFreq) + Kubanddownlink.MinFreq;
+    FREQ = round(FREQ / Kubanddownlink.FreqbandwidthSpan) * Kubanddownlink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Ku_downlink_1MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C33
+Ku band downlink @10MHz
+% Ku band downlink @10MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Kubanddownlink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Kubanddownlink = struct('Name', 'Ku-Uplink', 'MinFreq', 11.7e9, 'MaxFreq', 12.2e9, 'FreqbandwidthSpan', 10e6);
+
+% Arrays for frequencies and time for Kubanddownlink
+KuDownlinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second Ku band downlink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for Ku
+        % downlink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Kubanddownlink.MaxFreq - Kubanddownlink.MinFreq) + Kubanddownlink.MinFreq;
+        
+        % Frequency adjustment to 27MHz bandwidth limiting available space
+        FREQ = round(FREQ / Kubanddownlink.FreqbandwidthSpan) * Kubanddownlink.FreqbandwidthSpan;
+        
+        % Display frequencies for Ku-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Kubanddownlink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    KuDownlinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'ku_band_downlink_frequencies_10MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Kubanddownlink.MaxFreq - Kubanddownlink.MinFreq) + Kubanddownlink.MinFreq;
+            FREQ = round(FREQ / Kubanddownlink.FreqbandwidthSpan) * Kubanddownlink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = KuDownlinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Kubanddownlink.MaxFreq - Kubanddownlink.MinFreq) + Kubanddownlink.MinFreq;
+    FREQ = round(FREQ / Kubanddownlink.FreqbandwidthSpan) * Kubanddownlink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Ku_downlink_10MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C34
+Ku band downlink @27MHz
+% Ku band downlink @27MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Kubanddownlink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Kubanddownlink = struct('Name', 'Ku-Uplink', 'MinFreq', 11.7e9, 'MaxFreq', 12.2e9, 'FreqbandwidthSpan', 27e6);
+
+% Arrays for frequencies and time for Kubanddownlink
+KuDownlinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second Ku band downlink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for Ku
+        % downlink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Kubanddownlink.MaxFreq - Kubanddownlink.MinFreq) + Kubanddownlink.MinFreq;
+        
+        % Frequency adjustment to 27MHz bandwidth limiting available space
+        FREQ = round(FREQ / Kubanddownlink.FreqbandwidthSpan) * Kubanddownlink.FreqbandwidthSpan;
+        
+        % Display frequencies for Ku-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Kubanddownlink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    KuDownlinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'ku_band_downlink_frequencies_27MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Kubanddownlink.MaxFreq - Kubanddownlink.MinFreq) + Kubanddownlink.MinFreq;
+            FREQ = round(FREQ / Kubanddownlink.FreqbandwidthSpan) * Kubanddownlink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = KuDownlinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Kubanddownlink.MaxFreq - Kubanddownlink.MinFreq) + Kubanddownlink.MinFreq;
+    FREQ = round(FREQ / Kubanddownlink.FreqbandwidthSpan) * Kubanddownlink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'Ku_downlink_27MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C35
+X band uplink @1MHz
+% X band uplink @1MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Xbanduplink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Xbanuplink = struct('Name', 'Xbanduplink', 'MinFreq', 7.9e9, 'MaxFreq', 8.4e9, 'FreqbandwidthSpan', 1e6);
+
+% Arrays for frequencies and time for Xbanduplink
+XUplinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second X band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for X
+        % uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Xbanuplink.MaxFreq - Xbanuplink.MinFreq) + Xbanuplink.MinFreq;
+        
+        % Frequency adjustment to 1MHz bandwidth limiting available space
+        FREQ = round(FREQ / Xbanuplink.FreqbandwidthSpan) * Xbanuplink.FreqbandwidthSpan;
+        
+        % Display frequencies for C-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Xbanuplink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    XUplinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'X_band_uplink_frequencies_1MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Xbanuplink.MaxFreq - Xbanuplink.MinFreq) + Xbanuplink.MinFreq;
+            FREQ = round(FREQ / Xbanuplink.FreqbandwidthSpan) * Xbanuplink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = XUplinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Xbanuplink.MaxFreq - Xbanuplink.MinFreq) + Xbanuplink.MinFreq;
+    FREQ = round(FREQ / Xbanuplink.FreqbandwidthSpan) * Xbanuplink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'X_uplink_1MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C36
+Theoretical band uplink @10MHz
+% Theoretical band uplink @10MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Xbanduplink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Theobanuplink = struct('Name', 'Theoreticalbanduplink', 'MinFreq', 7.9e9, 'MaxFreq', 8.4e9, 'FreqbandwidthSpan', 10e6);
+
+% Arrays for frequencies and time for Xbanduplink
+TheoUplinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second X band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for X
+        % uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Theobanuplink.MaxFreq - Theobanuplink.MinFreq) + Theobanuplink.MinFreq;
+        
+        % Frequency adjustment to 1MHz bandwidth limiting available space
+        FREQ = round(FREQ / Theobanuplink.FreqbandwidthSpan) * Theobanuplink.FreqbandwidthSpan;
+        
+        % Display frequencies for X-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Theobanuplink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    TheoUplinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'X_band_uplink_frequencies_10MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Theobanuplink.MaxFreq - Theobanuplink.MinFreq) + Theobanuplink.MinFreq;
+            FREQ = round(FREQ / Theobanuplink.FreqbandwidthSpan) * Theobanuplink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = TheoUplinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Theobanuplink.MaxFreq - Theobanuplink.MinFreq) + Theobanuplink.MinFreq;
+    FREQ = round(FREQ / Theobanuplink.FreqbandwidthSpan) * Theobanuplink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'X_uplink_10MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C37
+X band uplink @20MHz
+% X band uplink @20MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Xbanduplink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Xbanuplink = struct('Name', 'Xbanduplink', 'MinFreq', 7.9e9, 'MaxFreq', 8.4e9, 'FreqbandwidthSpan', 20e6);
+
+% Arrays for frequencies and time for Xbanduplink
+XUplinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second X band uplink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for X
+        % uplink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Xbanuplink.MaxFreq - Xbanuplink.MinFreq) + Xbanuplink.MinFreq;
+        
+        % Frequency adjustment to 20MHz bandwidth limiting available space
+        FREQ = round(FREQ / Xbanuplink.FreqbandwidthSpan) * Xbanuplink.FreqbandwidthSpan;
+        
+        % Display frequencies for X-band uplink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Xbanuplink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    XUplinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'X_band_uplink_frequencies_20MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Xbanuplink.MaxFreq - Xbanuplink.MinFreq) + Xbanuplink.MinFreq;
+            FREQ = round(FREQ / Xbanuplink.FreqbandwidthSpan) * Xbanuplink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = XUplinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Xbanuplink.MaxFreq - Xbanuplink.MinFreq) + Xbanuplink.MinFreq;
+    FREQ = round(FREQ / Xbanuplink.FreqbandwidthSpan) * Xbanuplink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'X_uplink_20MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C38
+X band downlink @1MHz
+% X band downlink @1MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Xbanddownlink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Xbandownlink = struct('Name', 'Xbanddownlink', 'MinFreq', 7.25e9, 'MaxFreq', 7.75e9, 'FreqbandwidthSpan', 1e6);
+
+% Arrays for frequencies and time for Xbanddownlink
+XdownlinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second X band downlink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for X
+        % downlink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Xbandownlink.MaxFreq - Xbandownlink.MinFreq) + Xbandownlink.MinFreq;
+        
+        % Frequency adjustment to 1MHz bandwidth limiting available space
+        FREQ = round(FREQ / Xbandownlink.FreqbandwidthSpan) * Xbandownlink.FreqbandwidthSpan;
+        
+        % Display frequencies for X-band downlink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Xbandownlink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one pico second = 1 Second
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    XdownlinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'X_band_downlink_frequencies_1MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Xbandownlink.MaxFreq - Xbandownlink.MinFreq) + Xbandownlink.MinFreq;
+            FREQ = round(FREQ / Xbandownlink.FreqbandwidthSpan) * Xbandownlink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = XdownlinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Xbandownlink.MaxFreq - Xbandownlink.MinFreq) + Xbandownlink.MinFreq;
+    FREQ = round(FREQ / Xbandownlink.FreqbandwidthSpan) * Xbandownlink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'X_downlink_1MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C39
+X band downlink @10MHz
+% X band downlink @10MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Xbanddownlink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Xbandownlink = struct('Name', 'Xbanddownlink', 'MinFreq', 7.25e9, 'MaxFreq', 7.75e9, 'FreqbandwidthSpan', 10e6);
+
+% Arrays for frequencies and time for Xbanddownlink
+XdownlinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second X band downlink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for X
+        % downlink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Xbandownlink.MaxFreq - Xbandownlink.MinFreq) + Xbandownlink.MinFreq;
+        
+        % Frequency adjustment to 10MHz bandwidth limiting available space
+        FREQ = round(FREQ / Xbandownlink.FreqbandwidthSpan) * Xbandownlink.FreqbandwidthSpan;
+        
+        % Display frequencies for X-band downlink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Xbandownlink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one pico second = 1 Second
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    XdownlinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'X_band_downlink_frequencies_10MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Xbandownlink.MaxFreq - Xbandownlink.MinFreq) + Xbandownlink.MinFreq;
+            FREQ = round(FREQ / Xbandownlink.FreqbandwidthSpan) * Xbandownlink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = XdownlinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Xbandownlink.MaxFreq - Xbandownlink.MinFreq) + Xbandownlink.MinFreq;
+    FREQ = round(FREQ / Xbandownlink.FreqbandwidthSpan) * Xbandownlink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'X_downlink_10MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code C40
+X band downlink @20MHz
+% X band downlink @20MHz pseudorandom with export to Excel
+
+% Time length of simulation per session
+SimDuration = 86400; % 86400 seconds (1 day)
+
+% Number of sessions
+NumSessions = 3; % Each session equals one day, thus a total of 3 days worth of trials.
+
+% Xbanddownlink structure. Provides values and decimal limitations for
+% frequencies. Frequencies of MinFreq and MaxFreq are both in GHz, and the
+% FreqbandwidthSpan is in MHz. 
+Xbandownlink = struct('Name', 'Xbanddownlink', 'MinFreq', 7.25e9, 'MaxFreq', 7.75e9, 'FreqbandwidthSpan', 20e6);
+
+% Arrays for frequencies and time for Xbanddownlink
+XdownlinkFreq = zeros(SimDuration, NumSessions);
+TempusInSeconds = 1:SimDuration;
+
+% Pseudorandom freqs and second X band downlink for each session
+for session = 1:NumSessions
+    InsideFreq = zeros(SimDuration, 1);
+    for attempt = 1:SimDuration
+        % Random frequency generation within the specified range for X
+        % downlink. Using rand numbers between 0 and 1 multiplied by the
+        % difference of max-min, then added back to min freq.
+        FREQ = rand * (Xbandownlink.MaxFreq - Xbandownlink.MinFreq) + Xbandownlink.MinFreq;
+        
+        % Frequency adjustment to 20MHz bandwidth limiting available space
+        FREQ = round(FREQ / Xbandownlink.FreqbandwidthSpan) * Xbandownlink.FreqbandwidthSpan;
+        
+        % Display frequencies for X-band downlink with a decimal limitation
+        % of 4 places as it is for most transmission equipment
+        disp(['Trial ', num2str(session), ' Time (Seconds) ', num2str(attempt), ': ', Xbandownlink.Name, ' Frequency = ', num2str(FREQ/1e9, '%.4f'), ' GHZ']);
+        
+        % Inner loop frequency to variable
+        InsideFreq(attempt) = FREQ;
+        
+        % Pause for less than one second to speed up solutions
+        %This simulates one second for every one frequency
+        %generated - one picosecond
+        pause(0.000000000001);
+    end
+    % Moving from local to global / session array
+    XdownlinkFreq(:, session) = InsideFreq;
+end
+
+% Excel file path and name for the file
+excelFilename = fullfile(pwd, 'X_band_downlink_frequencies_20MHz.xlsx');
+
+% Making one standard table for data to populate
+frequencyTable = array2table(TempusInSeconds', 'VariableNames', {'Time (Seconds)'});
+
+for session = 1:NumSessions
+    % Generate random frequencies for Opponent trials
+    if session < NumSessions
+        opponentFreq = zeros(SimDuration, 1);
+        for attempt = 1:SimDuration
+            FREQ = rand * (Xbandownlink.MaxFreq - Xbandownlink.MinFreq) + Xbandownlink.MinFreq;
+            FREQ = round(FREQ / Xbandownlink.FreqbandwidthSpan) * Xbandownlink.FreqbandwidthSpan;
+            opponentFreq(attempt) = FREQ;
+            pause(0.000000000001);
+        end
+    % Opponent trials values for table
+        frequencyTable.(['Opponent_Trial' num2str(session)]) = opponentFreq / 1e9;
+    end
+    
+    % Transmitter trial values for table
+    frequencyTable.(['Transmitter_Trial' num2str(session)]) = XdownlinkFreq(:, session) / 1e9;
+end
+
+% Opponent Trial 3 column with random frequencies to ensure it makes it to the table 
+opponentFreq3 = zeros(SimDuration, 1);
+for attempt = 1:SimDuration
+    FREQ = rand * (Xbandownlink.MaxFreq - Xbandownlink.MinFreq) + Xbandownlink.MinFreq;
+    FREQ = round(FREQ / Xbandownlink.FreqbandwidthSpan) * Xbandownlink.FreqbandwidthSpan;
+    opponentFreq3(attempt) = FREQ;
+    pause(0.000000000001);
+end
+% Values stored in a frequency table and converted to GHZ
+frequencyTable.(['Opponent_Trial' num2str(NumSessions)]) = opponentFreq3 / 1e9;
+
+% Create Excel file and export table
+writetable(frequencyTable, excelFilename, 'Sheet', 'X_downlink_20MHz');
+
+% Excel export action in the command window 
+disp(['Freqs sent to Excel file: ', excelFilename]);
+
+% Notification message box of the file being written
+
+waitfor(msgbox('Your file has been written cheers!...', 'Modal'));
+
+
